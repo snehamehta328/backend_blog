@@ -15,7 +15,7 @@ public interface BlogRepository extends JpaRepository<blog, Long>
     List<blog> findAll();
 
     List<blog>findByUsers(user users);
-//    blogs findByBlogId(Long id);
+    blog findByBlogId(Long id);
     List<blog>findAllByCategory(String product_category);
 //    List<Products>findAllByCategoryAndPriceBetween(String cat,Double p1,Double p2);
 //    List<Products>findByPriceBetween(Double product_price1,Double product_price2);

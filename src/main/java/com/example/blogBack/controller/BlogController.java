@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200" , methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "http://localhost:4200" , methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 @RestController
 @RequestMapping("/api")
 public class BlogController
@@ -25,18 +25,25 @@ public class BlogController
     UserRepository userRepository;
     @Autowired
     UserService userService;
-    @GetMapping("/blogdetails")
+    @RequestMapping(value="/blogdetails", method = RequestMethod.GET)
+    @ResponseBody
+//    @GetMapping("/blogdetails")
     public List<blog> getAlldetails()
     {
         return blogRepository.findAll();
     }
-    @PostMapping("/insert")
+
+    @RequestMapping(value="/insert", method = RequestMethod.POST)
+    @ResponseBody
+//    @PostMapping("/insert")
     public blog createNewBlog(@Valid @RequestBody blog ifc)
     {
         return blogRepository.save(ifc);
     }
 
-@PostMapping("/addblog")
+    @RequestMapping(value="/addblog", method = RequestMethod.POST)
+    @ResponseBody
+//@PostMapping("/addblog")
 public blog addblog(@RequestBody blog b, Principal principal)
 {
     return userService.addblog(b, userService.getUserId(principal));
@@ -52,16 +59,22 @@ public blog addblog(@RequestBody blog b, Principal principal)
 
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/par/{blog_id}")
+    @RequestMapping(value="/par/{blog_id}", method = RequestMethod.GET)
+    @ResponseBody
     public blog getDetailsById(@PathVariable(value="blog_id") Long blogId)
     {
         return blogRepository.findById(blogId).orElseThrow(() -> new ResourceNotFoundException("Details", "product_id", blogId));
     }
-    @GetMapping("/getProductsByCategory/{category}")
+    @RequestMapping(value="/getProductsByCategory/{category}", method = RequestMethod.GET)
+    @ResponseBody
+//    @GetMapping("/getProductsByCategory/{category}")
     public List<blog> getProductsByCategory(@PathVariable(value="category")String product_category)
     {
         return blogRepository.findAllByCategory(product_category);
     }
+
+//    @RequestMapping(value="/blo/{id}", method = RequestMethod.PUT)
+//    @ResponseBody
     @PutMapping("/blo/{id}")
     public blog updateNote(@PathVariable(value = "id") Long noteId,
                                @Valid @RequestBody blog noteDetails) {
@@ -76,6 +89,20 @@ public blog addblog(@RequestBody blog b, Principal principal)
         blog updatedNote = blogRepository.save(note);
         return updatedNote;
     }
+//@RequestMapping(value="/blo/{id}", method = RequestMethod.PUT)
+//@ResponseBody
+//    public blog update(@PathVariable(value = "id") blog b  @Valid @RequestBody )
+//    {
+//        Long blogid=b.getBlogId();
+//        blog blog=blogRepository.findByBlogId(blogid);
+//        System.out.println(blog);
+//        blog.setActive(b.getActive());
+//        blog.setCategory(b.getCategory());
+//        blog.setContent(b.getContent());
+//        blog.setImage(b.getImage());
+//        blog.setName(b.getName());
+//        return blogRepository.save(blog);
+//    }
 
 }
 
